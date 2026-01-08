@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lone Labs | Desenvolvimento Web Profissional</title>
+  <meta name="description" content="Lone Labs: soluções web de alto desempenho para startups e empresas. SaaS, landing pages, sistemas full-stack e experiências digitais sob medida.">
+  
+  <!-- Fontes premium -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Ícones -->
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+  <!-- GSAP via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #0f172a;
+      --muted: #64748b;
+      --accent: #3b82f6;
+      --accent-dark: #1d4ed8;
+      --card-bg: #f8fafc;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --shadow: 0 4px 12px -3px rgba(0, 0, 0, 0.08);
+      --radius: 16px;
+      --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --fg: #f1f5f9;
+      --muted: #94a3b8;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --shadow: 0 4px 12px -3px rgba(0, 0, 0, 0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background-color 0.4s ease;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .container {
+      width: min(90%, 1280px);
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      padding: 1.5rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    [data-theme="dark"] header {
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: var(--fg);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    nav a {
+      margin-left: 2rem;
+      text-decoration: none;
+      color: var(--fg);
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      color: var(--fg);
+      font-size: 1.4rem;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .theme-toggle:hover {
+      background: var(--card-bg);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 7rem 0 5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3.8rem;
+      max-width: 900px;
+      margin: 0 auto 1.8rem;
+      opacity: 0;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--muted);
+      max-width: 720px;
+      margin: 0 auto 2.8rem;
+      opacity: 0;
+    }
+
+    .hero-buttons {
+      opacity: 0;
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 0.9rem 2.2rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      border: 2px solid var(--accent);
+      font-size: 1.05rem;
+    }
+
+    .btn:hover {
+      background: transparent;
+      color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--accent);
+      margin-left: 1.2rem;
+    }
+
+    .btn-outline:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* Seções */
+    section {
+      padding: 6rem 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-title h2 {
+      font-size: 2.7rem;
+      margin-bottom: 1.2rem;
+      opacity: 0;
+    }
+
+    .section-title p {
+      color: var(--muted);
+      max-width: 650px;
+      margin: 0 auto;
+      opacity: 0;
+    }
+
+    /* Serviços */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.2rem;
+    }
+
+    .service-card {
+      background: var(--card-bg);
+      padding: 2.2rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      transition: var(--transition);
+      opacity: 0;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow);
+    }
+
+    .service-card i {
+      font-size: 2.6rem;
+      color: var(--accent);
+      margin-bottom: 1.4rem;
+    }
+
+    .service-card h3 {
+      font-size: 1.55rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Portfólio */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.8rem;
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: var(--transition);
+      opacity: 0;
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow);
+    }
+
+    .project-image {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-align: center;
+      padding: 0 1rem;
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+    }
+
+    [data-theme="dark"] .project-image {
+      background: linear-gradient(135deg, #1e3a8a, #1d4ed8);
+    }
+
+    .project-content {
+      padding: 1.8rem;
+    }
+
+    .project-content h3 {
+      font-size: 1.4rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .project-content p {
+      color: var(--muted);
+      margin-bottom: 1.4rem;
+      font-size: 0.98rem;
+    }
+
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+
+    .tech-tag {
+      background: #dbeafe;
+      color: var(--accent-dark);
+      padding: 0.25rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    [data-theme="dark"] .tech-tag {
+      background: #1e3a8a;
+      color: #bfdbfe;
+    }
+
+    /* Depoimento */
+    .testimonial {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 2.5rem;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      opacity: 0;
+    }
+
+    .testimonial p {
+      font-size: 1.3rem;
+      font-style: italic;
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+
+    .client {
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    .role {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* CTA */
+    .cta {
+      background: linear-gradient(135deg, #1e3a8a, #1e40af);
+      color: white;
+      text-align: center;
+      padding: 6rem 0;
+    }
+
+    [data-theme="dark"] .cta {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+    }
+
+    .cta h2 {
+      font-size: 2.9rem;
+      margin-bottom: 1.6rem;
+      opacity: 0;
+    }
+
+    .cta p {
+      max-width: 720px;
+      margin: 0 auto 2.8rem;
+      font-size: 1.15rem;
+      opacity: 0.9;
+      opacity: 0;
+    }
+
+    .cta .btn {
+      background: white;
+      color: var(--accent);
+      border-color: white;
+    }
+
+    .cta .btn:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 3rem 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.6rem;
+      }
+      .hero p {
+        font-size: 1.1rem;
+      }
+      nav a {
+        margin-left: 1.2rem;
+        font-size: 0.95rem;
+      }
+      .btn {
+        display: block;
+        margin: 0.8rem auto;
+        width: fit-content;
+      }
+      .btn-outline {
+        margin-left: 0;
+      }
+      .hero-buttons,
+      .section-title h2,
+      .section-title p,
+      .cta h2,
+      .cta p {
+        opacity: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-content">
+      <a href="#" class="logo">Lone<span>Labs</span></a>
+      <nav>
+        <a href="#servicos">Serviços</a>
+        <a href="#portfolio">Portfólio</a>
+        <a href="#contato">Contato</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle">
+        <i class='bx bx-moon'></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>Soluções Web Profissionais para Empresas Ambiciosas</h1>
+      <p>Lone Labs entrega sistemas escaláveis, seguros e performáticos — desde landing pages até plataformas SaaS complexas. Código limpo, arquitetura sólida, resultados reais.</p>
+      <div class="hero-buttons">
+        <a href="#portfolio" class="btn">Ver Projetos</a>
+        <a href="#contato" class="btn btn-outline">Contratar</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Serviços -->
+  <section id="servicos">
+    <div class="container">
+      <div class="section-title">
+        <h2>Nossos Serviços</h2>
+        <p>Desenvolvimento sob demanda, com foco em performance, segurança e experiência do usuário.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <i class='bx bx-layer'></i>
+          <h3>Landing Pages & One-Pages</h3>
+          <p>Conversão otimizada, carregamento instantâneo, SEO amigável e integração com ferramentas de marketing (RD Station, HubSpot, etc).</p>
+        </div>
+        <div class="service-card">
+          <i class='bx bx-desktop'></i>
+          <h3>Frontend Premium</h3>
+          <p>Interfaces responsivas com React, Vue ou vanilla JS. Foco em acessibilidade, performance e animações sutis com GSAP.</p>
+        </div>
+        <div class="service-card">
+          <i class='bx bx-server'></i>
+          <h3>Backend & APIs</h3>
+          <p>Arquitetura limpa, testes automatizados, autenticação segura e documentação clara. Node.js, Python ou PHP moderno.</p>
+        </div>
+        <div class="service-card">
+          <i class='bx bx-package'></i>
+          <h3>Plataformas SaaS</h3>
+          <p>Sistemas completos com multi-tenant, painéis administrativos, faturamento recorrente e escalabilidade horizontal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfólio -->
+  <section id="portfolio">
+    <div class="container">
+      <div class="section-title">
+        <h2>Portfólio Profissional</h2>
+        <p>Projetos reais entregues para clientes no Brasil e exterior.</p>
+      </div>
+      <div class="portfolio-grid">
+        <!-- Projeto 1 -->
+        <div class="project-card">
+          <div class="project-image">SaaS de Gestão Escolar</div>
+          <div class="project-content">
+            <h3>EduFlow</h3>
+            <p>Plataforma completa para escolas: matrículas, boletins, comunicação com pais e faturamento. Arquitetura microservices com painel admin intuitivo.</p>
+            <div class="tech-tags">
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">NestJS</span>
+              <span class="tech-tag">PostgreSQL</span>
+              <span class="tech-tag">AWS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projeto 2 -->
+        <div class="project-card">
+          <div class="project-image">Landing Page Conversão Alta</div>
+          <div class="project-content">
+            <h3>Finanças Inteligentes</h3>
+            <p>Landing page para curso de investimentos com +42% de taxa de conversão. Integração com Hotmart, WhatsApp e pixel de rastreamento.</p>
+            <div class="tech-tags">
+              <span class="tech-tag">HTML5</span>
+              <span class="tech-tag">GSAP</span>
+              <span class="tech-tag">SEO</span>
+              <span class="tech-tag">RD Station</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projeto 3 -->
+        <div class="project-card">
+          <div class="project-image">One-Page Corporativa</div>
+          <div class="project-content">
+            <h3>TechNova Solutions</h3>
+            <p>Site institucional moderno para empresa de TI, com seções animadas, formulário de contato inteligente e otimização para mobile-first.</p>
+            <div class="tech-tags">
+              <span class="tech-tag">Vue 3</span>
+              <span class="tech-tag">Tailwind</span>
+              <span class="tech-tag">Netlify Forms</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projeto 4 -->
+        <div class="project-card">
+          <div class="project-image">Dashboard Financeiro</div>
+          <div class="project-content">
+            <h3>CapitalTrack</h3>
+            <p>Sistema de análise financeira com gráficos em tempo real, exportação de relatórios e autenticação por 2 fatores. Usado por +200 gestores.</p>
+            <div class="tech-tags">
+              <span class="tech-tag">TypeScript</span>
+              <span class="tech-tag">Express</span>
+              <span class="tech-tag">Chart.js</span>
+              <span class="tech-tag">MongoDB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Depoimento -->
+  <section>
+    <div class="container">
+      <div class="testimonial">
+        <p>“O time da Lone Labs transformou nossa ideia em um produto escalável, seguro e com UX impecável. O código é tão bem estruturado que reduziu nosso custo de manutenção em 60%.”</p>
+        <div class="client">Rafael Almeida</div>
+        <div class="role">CEO @ EduFlow</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="contato" class="cta">
+    <div class="container">
+      <h2>Vamos construir algo extraordinário?</h2>
+      <p>Oferecemos uma **reunião técnica gratuita** para entender seus desafios e propor a solução ideal — sem compromisso.</p>
+      <a href="mailto:hello@lonelabs.dev" class="btn">Enviar Proposta</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Lone Labs. Todos os direitos reservados.<br>Código limpo. Arquitetura sólida. Resultados reais.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Dark Mode Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    
+    if (currentTheme === 'dark') {
+      themeToggle.innerHTML = '<i class="bx bx-sun"></i>';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const newTheme = isDark ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      
+      themeToggle.innerHTML = newTheme === 'dark' 
+        ? '<i class="bx bx-sun"></i>' 
+        : '<i class="bx bx-moon"></i>';
+    });
+
+    // GSAP Animations
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.innerWidth <= 768) return; // Skip on mobile for performance
+
+      gsap.from('.hero h1', { opacity: 0, y: 30, duration: 0.8, delay: 0.2 });
+      gsap.from('.hero p', { opacity: 0, y: 20, duration: 0.7, delay: 0.4 });
+      gsap.from('.hero-buttons', { opacity: 0, y: 20, duration: 0.7, delay: 0.6 });
+
+      gsap.from('.section-title h2', { opacity: 0, y: 20, duration: 0.6, scrollTrigger: { trigger: '#servicos', start: 'top 80%' } });
+      gsap.from('.section-title p', { opacity: 0, y: 15, duration: 0.6, delay: 0.1, scrollTrigger: { trigger: '#servicos', start: 'top 80%' } });
+
+      gsap.utils.toArray('.service-card').forEach((card, i) => {
+        gsap.from(card, {
+          opacity: 0,
+          y: 30,
+          duration: 0.6,
+          delay: i * 0.1,
+          scrollTrigger: { trigger: card, start: 'top 85%' }
+        });
+      });
+
+      gsap.utils.toArray('.project-card').forEach((card, i) => {
+        gsap.from(card, {
+          opacity: 0,
+          y: 40,
+          duration: 0.7,
+          delay: i * 0.1,
+          scrollTrigger: { trigger: card, start: 'top 85%' }
+        });
+      });
+
+      gsap.from('.testimonial', { opacity: 0, y: 30, duration: 0.7, scrollTrigger: { trigger: '.testimonial', start: 'top 80%' } });
+      gsap.from('.cta h2', { opacity: 0, y: 20, duration: 0.7, scrollTrigger: { trigger: '.cta', start: 'top 90%' } });
+      gsap.from('.cta p', { opacity: 0, y: 15, duration: 0.7, delay: 0.1, scrollTrigger: { trigger: '.cta', start: 'top 90%' } });
+    });
+  </script>
+
+</body>
+</html>
