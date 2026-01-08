@@ -12,9 +12,6 @@
   <!-- Ícones -->
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
-  <!-- GSAP via CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-
   <style>
     :root {
       --bg: #ffffff;
@@ -155,7 +152,6 @@
       font-size: 3.8rem;
       max-width: 900px;
       margin: 0 auto 1.8rem;
-      opacity: 0;
     }
 
     .hero p {
@@ -163,11 +159,13 @@
       color: var(--muted);
       max-width: 720px;
       margin: 0 auto 2.8rem;
-      opacity: 0;
     }
 
     .hero-buttons {
-      opacity: 0;
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-top: 1.5rem;
     }
 
     .btn {
@@ -193,7 +191,6 @@
     .btn-outline {
       background: transparent;
       color: var(--accent);
-      margin-left: 1.2rem;
     }
 
     .btn-outline:hover {
@@ -214,14 +211,12 @@
     .section-title h2 {
       font-size: 2.7rem;
       margin-bottom: 1.2rem;
-      opacity: 0;
     }
 
     .section-title p {
       color: var(--muted);
       max-width: 650px;
       margin: 0 auto;
-      opacity: 0;
     }
 
     /* Serviços */
@@ -237,7 +232,6 @@
       border-radius: var(--radius);
       border: 1px solid var(--border);
       transition: var(--transition);
-      opacity: 0;
     }
 
     .service-card:hover {
@@ -269,7 +263,6 @@
       overflow: hidden;
       border: 1px solid var(--border);
       transition: var(--transition);
-      opacity: 0;
     }
 
     .project-card:hover {
@@ -339,7 +332,6 @@
       background: var(--card-bg);
       border-radius: var(--radius);
       border: 1px solid var(--border);
-      opacity: 0;
     }
 
     .testimonial p {
@@ -374,15 +366,12 @@
     .cta h2 {
       font-size: 2.9rem;
       margin-bottom: 1.6rem;
-      opacity: 0;
     }
 
     .cta p {
       max-width: 720px;
       margin: 0 auto 2.8rem;
       font-size: 1.15rem;
-      opacity: 0.9;
-      opacity: 0;
     }
 
     .cta .btn {
@@ -424,13 +413,6 @@
       }
       .btn-outline {
         margin-left: 0;
-      }
-      .hero-buttons,
-      .section-title h2,
-      .section-title p,
-      .cta h2,
-      .cta p {
-        opacity: 1 !important;
       }
     }
   </style>
@@ -614,42 +596,6 @@
       themeToggle.innerHTML = newTheme === 'dark' 
         ? '<i class="bx bx-sun"></i>' 
         : '<i class="bx bx-moon"></i>';
-    });
-
-    // GSAP Animations
-    document.addEventListener('DOMContentLoaded', () => {
-      if (window.innerWidth <= 768) return; // Skip on mobile for performance
-
-      gsap.from('.hero h1', { opacity: 0, y: 30, duration: 0.8, delay: 0.2 });
-      gsap.from('.hero p', { opacity: 0, y: 20, duration: 0.7, delay: 0.4 });
-      gsap.from('.hero-buttons', { opacity: 0, y: 20, duration: 0.7, delay: 0.6 });
-
-      gsap.from('.section-title h2', { opacity: 0, y: 20, duration: 0.6, scrollTrigger: { trigger: '#servicos', start: 'top 80%' } });
-      gsap.from('.section-title p', { opacity: 0, y: 15, duration: 0.6, delay: 0.1, scrollTrigger: { trigger: '#servicos', start: 'top 80%' } });
-
-      gsap.utils.toArray('.service-card').forEach((card, i) => {
-        gsap.from(card, {
-          opacity: 0,
-          y: 30,
-          duration: 0.6,
-          delay: i * 0.1,
-          scrollTrigger: { trigger: card, start: 'top 85%' }
-        });
-      });
-
-      gsap.utils.toArray('.project-card').forEach((card, i) => {
-        gsap.from(card, {
-          opacity: 0,
-          y: 40,
-          duration: 0.7,
-          delay: i * 0.1,
-          scrollTrigger: { trigger: card, start: 'top 85%' }
-        });
-      });
-
-      gsap.from('.testimonial', { opacity: 0, y: 30, duration: 0.7, scrollTrigger: { trigger: '.testimonial', start: 'top 80%' } });
-      gsap.from('.cta h2', { opacity: 0, y: 20, duration: 0.7, scrollTrigger: { trigger: '.cta', start: 'top 90%' } });
-      gsap.from('.cta p', { opacity: 0, y: 15, duration: 0.7, delay: 0.1, scrollTrigger: { trigger: '.cta', start: 'top 90%' } });
     });
   </script>
 
